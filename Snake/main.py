@@ -1,7 +1,6 @@
 import random
 from tkinter import *
 
-
 GAME_WIDTH = 700
 GAME_HEIGHT = 700
 SPEED = 200
@@ -10,6 +9,7 @@ BODY_PARTS = 3
 SNAKE_COLOR = "green"
 FOOD_COLOR = "red"
 BACKGROUND_COLOR = "black"
+
 
 class Snake:
     def __init__(self):
@@ -20,30 +20,28 @@ class Snake:
             self.coordinates.append([50, 50])
 
         for x, y in self.coordinates:
-            sq = canvas.create_rectangle(x, y, x+SPACE_SIZE, y+SPACE_SIZE, fill=SNAKE_COLOR, tags="snake")
+            sq = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tags="snake")
             self.sq.append(sq)
+
 
 class Food:
     def __init__(self) -> object:
-        x = random.randint(0, int(GAME_WIDTH / SPACE_SIZE)-1) * SPACE_SIZE
+        x = random.randint(0, int(GAME_WIDTH / SPACE_SIZE) - 1) * SPACE_SIZE
         y = random.randint(0, int(GAME_HEIGHT / SPACE_SIZE) - 1) * SPACE_SIZE
         self.coordinates = [x, y]
         canvas.create_oval(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=FOOD_COLOR, tag="food")
 
 
-
-
 def next_turn(snake, food):
-
     x, y = snake.coordinates[0]
-    print((x,y))
+    print((x, y))
 
-    print("move ",direction)
+    print("move ", direction)
     if direction == "up":
-        y-=SPACE_SIZE
+        y -= SPACE_SIZE
 
     elif direction == "down":
-        y+=SPACE_SIZE
+        y += SPACE_SIZE
 
     elif direction == "left":
         x -= SPACE_SIZE
@@ -52,9 +50,9 @@ def next_turn(snake, food):
         x += SPACE_SIZE
 
     # insert new  part of the snake
-    snake.coordinates.insert(0, (x,y))
-    sq = canvas.create_rectangle(x, y, x+SPACE_SIZE, y+SPACE_SIZE, fill=SNAKE_COLOR, tags="snake")
-    snake.sq.insert(0,sq)
+    snake.coordinates.insert(0, (x, y))
+    sq = canvas.create_rectangle(x, y, x + SPACE_SIZE, y + SPACE_SIZE, fill=SNAKE_COLOR, tags="snake")
+    snake.sq.insert(0, sq)
 
     if x == food.coordinates[0] and y == food.coordinates[1]:
         global score_level
@@ -73,10 +71,12 @@ def next_turn(snake, food):
     else:
         window.after(SPEED, next_turn, snake, food)
 
+
 def game_over():
     canvas.delete(ALL)
-    canvas.create_text(canvas.winfo_width()/2, canvas.winfo_height()/2,
-                       font=('consolas', 70 ), text="GAME OVER", fill="red")
+    canvas.create_text(canvas.winfo_width() / 2, canvas.winfo_height() / 2,
+                       font=('consolas', 70), text="GAME OVER", fill="red")
+
 
 def change_direction(new_direction):
     global direction
@@ -96,20 +96,16 @@ def change_direction(new_direction):
             direction = new_direction
 
 
-
 def check_col(snake):
-    x, y =snake.coordinates[0]
-    print(x,y, GAME_HEIGHT, GAME_WIDTH)
-    if x < 0 or x >= GAME_WIDTH or y<0 or y>=GAME_HEIGHT:
-        #print(1111111111)
+    x, y = snake.coordinates[0]
+    print(x, y, GAME_HEIGHT, GAME_WIDTH)
+    if x < 0 or x >= GAME_WIDTH or y < 0 or y >= GAME_HEIGHT:
+        # print(1111111111)
         return True
     for bp in snake.coordinates[1:]:
-        if x == bp[0] and y==bp[1]:
+        if x == bp[0] and y == bp[1]:
             return True
     return False
-
-
-
 
 
 window = Tk()
@@ -123,13 +119,11 @@ label = Label(window,
               font=('consolas, 40'))
 label.pack()
 
-
 canvas = Canvas(window,
                 bg=BACKGROUND_COLOR,
                 height=GAME_HEIGHT,
                 width=GAME_WIDTH)
 canvas.pack()
-
 
 window.update()
 
@@ -143,13 +137,11 @@ screen_height = window.winfo_screenheight()
 # btn = Button(window, text="BTN", command=lambda :click(window_width,window_height,screen_width,screen_height) )
 # btn.pack()
 
-x = int((screen_width/2) - (window_width/2))
+x = int((screen_width / 2) - (window_width / 2))
 
-y = int ((screen_height/2) - (screen_height/2))
+y = int((screen_height / 2) - (screen_height / 2))
 
-window.geometry(f"{window_width}x{window_height}+{x}+{y}") #position of the screen
-
-
+window.geometry(f"{window_width}x{window_height}+{x}+{y}")  # position of the screen
 
 window.bind("<Left>", lambda event: change_direction("left"))
 window.bind("<Right>", lambda event: change_direction("right"))
@@ -159,6 +151,5 @@ window.bind("<Down>", lambda event: change_direction("down"))
 food = Food()
 snake = Snake()
 next_turn(snake, food)
-
 
 window.mainloop()

@@ -20,5 +20,4 @@ def alarm(minute, second):
 minute = int(input("How many minute delay for alarm ??? "))
 second = int(input("How many second delay for alarm ??? "))
 
-
 alarm(minute,second)
